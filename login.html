@@ -72,12 +72,12 @@
                             <p>Inicio de Sesión</p>
           
                             <div class="form-outline mb-4">
-                              <input type="email" id="form2Example11" class="form-control" placeholder="" />
+                              <input type="email" id="form2Example11" class="form-control" name="user" id="user" placeholder="" />
                               <label class="form-label" for="form2Example11">Correo</label>
                             </div>
           
                             <div class="form-outline mb-4">
-                              <input type="password" id="form2Example22" class="form-control" />
+                              <input type="password" id="form2Example22" name="pass" id="pass" class="form-control" />
                               <label class="form-label" for="form2Example22">Contraseña</label>
                             </div>
           
@@ -105,6 +105,64 @@
                 </div>
               </div>
             </div>
-          </section>
+        </section>
+
+        <script type="text/javascript">
+            function vaildar_usuario(){
+                $('#pass').val($('#pass').val().trim());			// QUITA ESPACIOS A LA DERECHA
+                var data = $('#form_login').serializeArray();
+                $.ajax({
+                    url: 'log.php',
+                    type: 'POST',
+                    dataType: "Json",
+                    data: data,
+    
+                    success:function(datosretorna){
+                        if (datosretorna.status==1) {
+                            var ruta = '<?php echo $ruta ?>';
+                            if(ruta != null) {
+                            window.location.href = ruta;
+                            } if(ruta == "") {
+                                window.location.href = "contacto.php";
+                            }
+                        }else {
+                            mensaje_error(datosretorna.message);
+                        }
+                    },
+                    error:function(e){
+                        mensaje_error("Imposible iniciar sesión!");
+                    }
+                });
+              }
+            </script>
+
     </body>
 </html>    
+
+
+
+
+
+
+</head>
+<body>
+	<div class="contenedor borde" >
+		<form id="form_login" action="javascript:vaildar_usuario();" method="POST">
+			<div class="form"><br>
+			<div align="left" > <a href="index.php"><img src="img/NUEVOLOGO2.png" width="50%" heigth:"50%"></a></div><br>
+			<h2 align="center">Inicio de Sesión</h2>
+			<input type="text" class="inputs borde" placeholder="&#9000; Usuario"  required>
+
+			<input type="password" class="inputs borde" placeholder="&#128272; Contraseña"  required><br><br>
+            
+			<input type="submit" value="Ingresar" name="Ingresar" id="Ingresar" class="borde">
+			
+			<label for = "Recordar"><input type="checkbox" name="Recordar" id="Recordar" value="">&ensp;Recordarme</label><br><br>
+			
+			<a a href="validacionclave.php">Olvido su contraseña?</a><br><br></div>
+		</form>
+	</div>
+	
+
+</body>
+</html>
